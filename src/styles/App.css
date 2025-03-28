@@ -1,0 +1,184 @@
+/* src/styles/App.css */
+/* Version: Final + Animated Background + UI Refinements */
+
+/* --- CSS Variables & Basic Reset --- */
+:root {
+    --provit-green: #75c045;
+    --provit-blue: #0babc3;
+    --provit-light-green: #a8d88a;
+    --provit-light-blue: #6fc8d7;
+    --provit-background: #f8f6f2;
+    --provit-text-dark: #333333;
+    --provit-text-light: #555555;
+    --provit-border-color: #e0e0e0;
+    --provit-white: #ffffff;
+    --provit-gradient-green: linear-gradient(105deg, var(--provit-light-green) 0%, var(--provit-green) 100%);
+    --provit-gradient-blue: linear-gradient(105deg, var(--provit-light-blue) 0%, var(--provit-blue) 100%);
+    --provit-error-color: #d9534f;
+    --font-primary: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    /* Animation Durations */
+    --transition-slow: 0.6s;
+    --transition-medium: 0.4s;
+    --transition-fast: 0.25s;
+  }
+  
+  * { box-sizing: border-box; }
+  body {
+      margin: 0;
+      font-family: var(--font-primary);
+      background-color: var(--provit-background); /* Static fallback */
+      color: var(--provit-text-dark);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      position: relative;
+      z-index: 1;
+  }
+  
+  /* --- Animated Gradient Background --- */
+  body::before {
+      content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1;
+      background: linear-gradient( 135deg, #f8f6f2 0%, #eef2f3 25%, #d7e5f0 50%, #e3f0d9 75%, #f8f6f2 100% );
+      background-size: 400% 400%;
+      animation: gradient-flow 25s ease-in-out infinite;
+      opacity: 0.8;
+  }
+  @keyframes gradient-flow { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+  
+  /* --- Main Structure --- */
+  .survey-container { background-color: transparent; max-width: 700px; margin: 0 auto; padding: 20px 20px 60px 20px; position: relative; min-height: 90vh; display: flex; flex-direction: column; align-items: center; }
+  .survey-header { width: 100%; text-align: center; padding: 15px 0; /* Preserves space but empty now */}
+  .survey-header img { height: 35px; }
+  .step-wrapper { width: 100%; position: relative; min-height: 350px; display: flex; justify-content: center; align-items: center; margin-top: 10px; margin-bottom: 10px; }
+  
+  /* --- Section Header Navigation --- */
+  .section-nav-container { display: flex; justify-content: center; gap: 25px; margin-bottom: 10px; padding-top: 10px; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; position: relative; /* Needed for z-index below? */}
+  .section-nav-item { font-size: 1.1rem; font-weight: 500; color: var(--provit-border-color); padding-bottom: 8px; border-bottom: 3px solid transparent; transition: color var(--transition-medium) ease; position: relative; cursor: default; }
+  .section-nav-item.viewed { color: var(--provit-text-light); }
+  .section-nav-item.active { color: var(--provit-text-dark); font-weight: 600; }
+  .section-nav-item.active::after { content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 3px; background-color: var(--provit-green); border-radius: 2px; transform: scaleX(0); animation: grow-underline 0.5s ease-out 0.2s forwards; transform-origin: center; }
+  @keyframes grow-underline { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .survey-header-spacer { height: 30px; }
+  
+  /* --- Progress Bar --- */
+  .progress-bar-container { width: 80%; max-width: 400px; margin: 0 auto 40px auto; height: 8px; }
+  .progress-bar { display: flex; height: 100%; width: 100%; gap: 5px; }
+  .progress-segment { flex: 1; height: 100%; background-color: var(--provit-border-color); border-radius: 4px; transition: background-color var(--transition-slow) ease-out; }
+  .progress-segment.active { background-color: var(--provit-green); }
+  
+  /* --- Step Content & Text --- */
+  .question-step { width: 100%; max-width: 550px; text-align: center; padding: 10px 0; }
+  .question-step h1 { font-size: 2.2rem; font-weight: 600; margin-bottom: 15px; line-height: 1.3; }
+  .question-step h2 { font-size: 1.8rem; font-weight: 500; margin-bottom: 10px; line-height: 1.3; color: var(--provit-text-dark);}
+  .question-step .sub-text { font-size: 1rem; color: var(--provit-text-light); margin-top: 5px; margin-bottom: 35px; max-width: 550px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+  /* Section header visual displayed during transition */
+  .section-header-display { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+  .section-header-display .step-indicator { font-size: 0.9rem; color: var(--provit-text-light); }
+  .section-header-display h2 { font-size: 2.2rem; font-weight: 500; position: relative; margin: 0; padding: 0 10px 8px 10px; }
+  .section-header-display h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 70px; height: 3px; background-color: var(--provit-green); border-radius: 2px; }
+  
+  /* --- Option Containers --- */
+  .options-container { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 500px; margin: 0 auto; }
+  .options-grid-container { display: grid; gap: 15px; width: 100%; max-width: 550px; margin: 0 auto; }
+  .options-icon-container { display: flex; justify-content: center; gap: 30px; margin-top: 30px; }
+  
+  /* --- Option Buttons --- */
+  .option-button { display: flex; align-items: center; justify-content: center; padding: 16px 18px; border: 2px solid var(--provit-border-color); border-radius: 16px; /* More curve */ background-color: var(--provit-white); font-size: 0.95rem; text-align: center; cursor: pointer; transition: background-color var(--transition-medium) ease, border-color var(--transition-medium) ease, transform var(--transition-fast) ease, box-shadow var(--transition-fast) ease; position: relative; min-height: 60px; line-height: 1.4; color: var(--provit-text-dark); transform: scale(0.95); /* Make smaller */ }
+  .option-button:hover:not(.selected) { border-color: var(--provit-green); transform: scale(0.95) translateY(-2px); box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08); }
+  .option-button.selected { border-color: var(--provit-green); background: var(--provit-gradient-green); color: var(--provit-white); box-shadow: 0 4px 10px rgba(117, 192, 69, 0.3); }
+  .option-button.selected span { color: var(--provit-white); }
+  .option-button.grid-item { flex-direction: column; gap: 8px; font-size: 0.9rem; padding: 15px 10px; }
+  .option-button .icon { font-size: 1.6rem; margin-bottom: 4px; }
+  
+  /* --- Checkbox Style (Uses option-button base) --- */
+  .checkbox-option-simplified { justify-content: center; padding: 18px 20px; /* Restore padding */ }
+  
+  /* --- Icon Select --- */
+  .icon-select-option { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px 30px; min-width: 120px; border: 2px solid var(--provit-border-color); border-radius: 16px; background-color: var(--provit-white); cursor: pointer; transition: background-color var(--transition-medium) ease, border-color var(--transition-medium) ease, transform var(--transition-fast) ease, box-shadow var(--transition-fast) ease; }
+  .icon-select-option .large-icon { font-size: 2.5rem; transition: transform var(--transition-fast) ease;}
+  .icon-select-option span { font-size: 1.1rem; font-weight: 500; color: var(--provit-text-dark);}
+  .icon-select-option:hover:not(.selected) { border-color: var(--provit-green); transform: translateY(-2px); box-shadow: 0 3px 8px rgba(0,0,0,0.08);}
+  .icon-select-option:hover:not(.selected) .large-icon { transform: scale(1.1); }
+  .icon-select-option.selected { border-color: var(--provit-green); background: var(--provit-gradient-green); box-shadow: 0 4px 10px rgba(117, 192, 69, 0.3); }
+  .icon-select-option.selected span { color: var(--provit-white); }
+  .icon-select-option.selected .large-icon { transform: scale(1.05); }
+  
+  /* --- Yes/No Circle Style --- */
+  .yes-no-container { display: flex; justify-content: center; gap: 40px; margin-top: 30px; }
+  .yes-no-option { font-size: 1.6rem; font-weight: 500; cursor: pointer; padding: 8px 15px; border-radius: 50%; position: relative; transition: color var(--transition-fast) ease; color: var(--provit-text-light);}
+  .yes-no-option:hover { color: var(--provit-green); }
+  .yes-no-option.selected { color: var(--provit-green); font-weight: 600;}
+  .yes-no-option::after { content: ''; position: absolute; top: -10px; bottom: -10px; left: -15px; right: -15px; border: 2.5px solid var(--provit-green); border-radius: 50%; opacity: 0; transform: scale(0.75) rotate(-15deg); transition: transform var(--transition-medium) cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity var(--transition-medium) ease; pointer-events: none; transform-origin: center center; z-index: -1; }
+  .yes-no-option.selected::after { opacity: 1; transform: scale(1) rotate(0deg); }
+  
+  /* --- Text Input Refined --- */
+  .text-input-container { margin-bottom: 30px; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; }
+  .text-input { width: 100%; padding: 12px 10px 10px 10px; font-size: 1.4rem; /* Smaller */ font-family: var(--font-primary); border: none; border-bottom: 2px solid var(--provit-border-color); border-radius: 0; background-color: transparent; text-align: center; outline: none; transition: border-color var(--transition-fast) ease; color: var(--provit-text-dark); appearance: none; -webkit-appearance: none; }
+  .text-input::placeholder { color: var(--provit-border-color); font-family: var(--font-primary); font-style: normal; font-weight: 300; opacity: 0.9; } /* Placeholder professional */
+  .text-input:focus { border-color: var(--provit-green); }
+  .text-input.error { border-color: var(--provit-error-color); }
+  .validation-error-msg { color: var(--provit-error-color); font-size: 0.85rem; margin-top: 8px; text-align: center; }
+  .text-input[type="number"]::-webkit-outer-spin-button, .text-input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .text-input[type="number"] { -moz-appearance: textfield; }
+  
+  /* --- Navigation Buttons --- */
+  .navigation-buttons { display: flex; justify-content: space-between; gap: 20px; margin-top: 40px; width: 100%; max-width: 550px; margin-left: auto; margin-right: auto; padding: 0 10px; }
+  .navigation-buttons.center { justify-content: center; }
+  .nav-button { padding: 14px 45px; font-size: 1rem; font-weight: 600; border: none; border-radius: 30px; cursor: pointer; transition: opacity var(--transition-fast) ease, box-shadow var(--transition-fast) ease, transform 0.1s ease; min-width: 120px; text-align: center; }
+  .nav-button.next { color: var(--provit-white); background: var(--provit-gradient-blue); box-shadow: 0 4px 10px rgba(11, 171, 195, 0.2); }
+  .nav-button.submit { background: var(--provit-gradient-green); box-shadow: 0 4px 10px rgba(117, 192, 69, 0.2); }
+  .nav-button.prev { background-color: transparent; color: var(--provit-text-light); border: 2px solid var(--provit-border-color); }
+  .nav-button:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: none; }
+  .nav-button:not(:disabled):hover { opacity: 0.88; transform: translateY(-1px); }
+  .nav-button.next:not(:disabled):hover { box-shadow: 0 6px 12px rgba(11, 171, 195, 0.25); }
+  .nav-button.submit:not(:disabled):hover { box-shadow: 0 6px 12px rgba(117, 192, 69, 0.25); }
+  .nav-button.prev:not(:disabled):hover { color: var(--provit-text-dark); border-color: var(--provit-text-light); box-shadow: none; }
+  
+  /* --- Section Header Display (During Transition), Loader, Results, Email --- */
+  .section-header-display { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+  .section-header-display .step-indicator { font-size: 0.9rem; color: var(--provit-text-light); }
+  .section-header-display h2 { font-size: 2.2rem; font-weight: 500; position: relative; margin: 0; padding: 0 10px 8px 10px; }
+  .section-header-display h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 70px; height: 3px; background-color: var(--provit-green); border-radius: 2px; }
+  .loader { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 350px; gap: 25px; }
+  .loader img { height: 70px; width: 70px; animation: spin 1.5s linear infinite; opacity: 0.8; }
+  .loader p { color: var(--provit-text-light); font-size: 1rem; }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  .results-page { width: 100%; max-width: 650px; margin: 20px auto; text-align: left; }
+  .results-page h2 { text-align: center; margin-bottom: 30px; font-size: 1.8rem; font-weight: 600; }
+  .results-summary { background-color: var(--provit-white); padding: 25px 30px; border-radius: 12px; border: 1px solid var(--provit-border-color); box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
+  .results-summary p { margin-top: 0; font-weight: 600; color: var(--provit-text-dark); margin-bottom: 15px; }
+  .results-summary pre { white-space: pre-wrap; word-wrap: break-word; background-color: #f9f9f9; padding: 15px; border-radius: 4px; border: 1px solid #eee; font-size: 0.85rem; max-height: 400px; overflow-y: auto; color: #444; }
+  .results-summary .results-note { margin-top: 25px; text-align: center; font-style: italic; font-size: 0.9rem; color: var(--provit-text-light); }
+  .consent-label { margin-top: 25px; display: flex; align-items: flex-start; justify-content: center; gap: 10px; font-size: 0.8rem; line-height: 1.45; color: var(--provit-text-light); max-width: 500px; margin-left: auto; margin-right: auto; text-align: left; }
+  .consent-label input[type="checkbox"] { appearance: none; width: 16px; height: 16px; border: 2px solid var(--provit-border-color); border-radius: 3px; margin-top: 2px; cursor: pointer; position: relative; flex-shrink: 0; transition: background-color 0.2s ease, border-color 0.2s ease; }
+  .consent-label input[type="checkbox"]:checked { background-color: var(--provit-green); border-color: var(--provit-green); }
+  .consent-label input[type="checkbox"]:checked::after { content: ''; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px; border: solid var(--provit-white); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .consent-label a { color: var(--provit-blue); text-decoration: underline; }
+  
+  /* --- Responsiveness --- */
+  @media (max-width: 600px) { /* Keep previous mobile adjustments */ }
+  
+  /* --- Focus States --- */
+  :focus-visible { outline: 3px solid var(--provit-blue); outline-offset: 2px; border-radius: 4px; }
+  .text-input:focus-visible { outline-offset: 0; border-radius: 0; }
+  .consent-label input[type="checkbox"]:focus-visible { outline: 3px solid var(--provit-blue); outline-offset: 1px; }
+  
+  /* ===================================================== */
+  /* <<< START: Drifting Background Elements Styles >>>     */
+  /* ===================================================== */
+  .background-elements{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;z-index:0;pointer-events:none}
+  .bg-element{position:absolute;opacity:.1;border-radius:60% 40% 30% 70%/50% 60% 40% 50%}
+  @keyframes drift-gentle{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(5vw,-8vh) rotate(15deg)}50%{transform:translate(-3vw,4vh) rotate(-5deg)}75%{transform:translate(4vw,6vh) rotate(10deg)}100%{transform:translate(0,0) rotate(0)}}
+  @keyframes drift-diagonal{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(-10vw,-15vh) rotate(-20deg)}100%{transform:translate(0,0) rotate(0)}}
+  @keyframes drift-sway{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(0,12vh) rotate(5deg)}100%{transform:translate(0,0) rotate(0)}}
+  .bg-element.el-1{width:180px;height:150px;background-color:var(--provit-green);top:10%;left:5%;animation:drift-gentle 35s ease-in-out infinite alternate -5s}
+  .bg-element.el-2{width:120px;height:200px;background-color:var(--provit-blue);top:25%;left:80%;animation:drift-diagonal 45s ease-in-out infinite alternate;border-radius:30% 70% 50% 50%/50% 40% 60% 50%}
+  .bg-element.el-3{width:150px;height:150px;background-color:var(--provit-light-green);top:70%;left:15%;animation:drift-sway 30s ease-in-out infinite alternate-reverse -10s}
+  .bg-element.el-4{width:100px;height:130px;background-color:var(--provit-light-blue);top:80%;left:75%;animation:drift-gentle 50s linear infinite alternate;border-radius:70% 30% 60% 40%/60% 50% 50% 40%}
+  .bg-element.el-5{width:90px;height:90px;background-color:var(--provit-green);top:5%;left:60%;animation:drift-diagonal 40s ease-in-out infinite alternate-reverse -8s;border-radius:50%}
+  .bg-element.el-6{width:160px;height:110px;background-color:var(--provit-blue);top:55%;left:5%;animation:drift-sway 55s ease-in-out infinite alternate -3s}
+  .bg-element.el-7{width:110px;height:140px;background-color:var(--provit-light-green);top:50%;left:90%;animation:drift-gentle 38s ease-in-out infinite alternate;border-radius:40% 60% 60% 40%/70% 50% 50% 30%}
+  .bg-element.el-8{width:130px;height:130px;background-color:var(--provit-light-blue);top:85%;left:40%;animation:drift-diagonal 60s linear infinite alternate-reverse -15s}
+  /* =================================================== */
+  /* <<< END: Drifting Background Elements Styles >>> */
+  /* =================================================== */
