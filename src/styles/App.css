@@ -182,3 +182,131 @@
   /* =================================================== */
   /* <<< END: Drifting Background Elements Styles >>> */
   /* =================================================== */
+
+
+
+  /* ==================================================== */
+/* <<< START: NEW - Welcome Screen Styles >>>           */
+/* ==================================================== */
+
+.welcome-screen {
+    width: 100%;
+    max-width: 1200px; /* Allow welcome screen to be wider */
+    min-height: 70vh; /* Ensure it takes significant height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px; /* Padding around the content */
+    color: var(--provit-text-dark); /* Default text color */
+}
+
+.welcome-content {
+    display: flex;
+    flex-direction: row; /* Side-by-side layout */
+    align-items: center; /* Vertically align items in the middle */
+    gap: 60px; /* Space between text and image columns */
+    width: 100%;
+}
+
+/* Left Text Column */
+.welcome-text {
+    flex: 1; /* Take up available space */
+    text-align: left; /* Align text to the left */
+    max-width: 500px; /* Limit text width */
+}
+
+.welcome-logo {
+    height: 40px; /* Adjust logo size */
+    margin-bottom: 25px;
+    display: block; /* Ensures margin bottom works correctly */
+}
+
+.welcome-title {
+    font-size: 2.8rem; /* Larger title */
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 15px;
+    color: var(--provit-text-dark);
+}
+
+.welcome-tagline {
+    font-size: 1.1rem;
+    color: var(--provit-text-light);
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.welcome-description {
+    font-size: 0.95rem;
+    color: var(--provit-text-light);
+    margin-bottom: 35px;
+    line-height: 1.7;
+}
+
+.welcome-button {
+    /* Reuse nav-button styles but maybe make it bigger/different */
+    display: inline-block; /* Allow setting width/padding */
+    padding: 16px 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: opacity 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    color: var(--provit-white);
+    background: var(--provit-gradient-green); /* Use Green gradient */
+    box-shadow: 0 4px 15px rgba(117, 192, 69, 0.3);
+}
+
+.welcome-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(117, 192, 69, 0.4);
+}
+
+/* Right Image Column */
+.welcome-image-container {
+    flex: 1; /* Take up available space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* For potential decorative elements later */
+    min-width: 300px; /* Prevent image squishing too much */
+}
+
+.welcome-hero-image {
+    max-width: 100%;
+    max-height: 50vh; /* Limit image height */
+    height: auto;
+    object-fit: contain; /* Ensure image scales nicely */
+    /* Add subtle animation/effects */
+     /* transform: rotate(-5deg) scale(1.05); */
+     /* filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); */
+}
+
+
+/* --- Responsiveness for Welcome Screen --- */
+@media (max-width: 850px) {
+    .welcome-content {
+        flex-direction: column-reverse; /* Stack image above text */
+        text-align: center; /* Center text */
+        gap: 40px;
+    }
+    .welcome-text {
+        text-align: center; /* Center align text */
+        max-width: 600px;
+        align-items: center; /* Center button */
+        display: flex;
+        flex-direction: column;
+    }
+    .welcome-logo { margin-left: auto; margin-right: auto;} /* Center logo */
+    .welcome-image-container { min-width: unset; width: 80%; }
+    .welcome-hero-image { max-height: 40vh; }
+    .welcome-title { font-size: 2.2rem; }
+    .welcome-tagline { font-size: 1rem; }
+}
+
+
+/* ================================================== */
+/* <<< END: NEW - Welcome Screen Styles >>>           */
+/* ================================================== */
